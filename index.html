@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이미지 편집기</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1>이미지 편집기</h1>
+  <p class="sub">이미지를 불러오고, 문구를 얹고, PNG로 저장하세요.</p>
+</header>
+
+<main class="layout">
+
+  <!-- 왼쪽: 편집 도구 -->
+  <section class="panel" aria-label="편집 도구">
+    <div class="group">
+      <h2>1. 이미지</h2>
+      <label class="file-label">
+        <input type="file" id="image-input" accept="image/png, image/jpeg">
+        <span>이미지 불러오기 (PNG / JPEG)</span>
+      </label>
+      <p class="hint" id="image-error" role="alert" hidden></p>
+    </div>
+
+    <div class="group">
+      <h2>2. 비율</h2>
+      <div class="ratio-group" role="group" aria-label="비율 선택">
+        <button type="button" class="ratio-btn" data-ratio="1:1" aria-pressed="true">1:1</button>
+        <button type="button" class="ratio-btn" data-ratio="4:5" aria-pressed="false">4:5</button>
+        <button type="button" class="ratio-btn" data-ratio="9:16" aria-pressed="false">9:16</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>3. 문구</h2>
+      <label class="field">
+        <span>문구</span>
+        <input type="text" id="text-input" value="안녕하세요" maxlength="200">
+      </label>
+      <label class="field">
+        <span>X 위치 <output id="x-out">0.50</output></span>
+        <input type="range" id="x-range" min="0" max="1" step="0.01" value="0.5">
+      </label>
+      <label class="field">
+        <span>Y 위치 <output id="y-out">0.80</output></span>
+        <input type="range" id="y-range" min="0" max="1" step="0.01" value="0.8">
+      </label>
+      <label class="field">
+        <span>크기 <output id="size-out">48</output>px</span>
+        <input type="range" id="size-range" min="12" max="200" step="1" value="48">
+      </label>
+      <label class="field">
+        <span>색</span>
+        <input type="color" id="color-input" value="#ffffff">
+      </label>
+    </div>
+
+    <div class="group">
+      <h2>4. 템플릿</h2>
+      <label class="field">
+        <span>템플릿 이름</span>
+        <input type="text" id="tpl-name" maxlength="40" placeholder="예: 여름 세일">
+      </label>
+      <div class="btn-row">
+        <button type="button" class="btn" id="tpl-save">저장</button>
+        <button type="button" class="btn ghost" id="json-export">JSON 내보내기</button>
+        <label class="btn ghost file-inline">
+          <input type="file" id="json-import" accept="application/json,.json">
+          <span>JSON 가져오기</span>
+        </label>
+      </div>
+      <p class="hint" id="tpl-msg" role="alert" hidden></p>
+      <ul class="tpl-list" id="tpl-list" aria-label="템플릿 목록"></ul>
+    </div>
+  </section>
+
+  <!-- 오른쪽: 미리보기 -->
+  <section class="preview" aria-label="미리보기">
+    <div class="canvas-wrap">
+      <canvas id="canvas" width="1080" height="1080" aria-label="편집 미리보기 캔버스"></canvas>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn" id="download">PNG 다운로드</button>
+    </div>
+    <p class="hint">미리보기와 저장 파일은 동일한 캔버스를 사용합니다.</p>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

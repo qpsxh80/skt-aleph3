@@ -40,7 +40,7 @@
     textY: 0.8,
     fontSize: 48,
     color: "#ffffff",
-    fontFamily: "'Nanum Pen Script', cursive"
+    fontFamily: "'Gaegu', sans-serif"
   };
 
   function uid(){
@@ -148,8 +148,12 @@
   function ensureFontAndDraw(){
     draw();
     if(document.fonts && document.fonts.load){
-      var fontSpec = "bold " + Math.max(12, state.fontSize) + "px " + state.fontFamily;
-      document.fonts.load(fontSpec).then(function(){
+      var size = Math.max(12, state.fontSize) + "px ";
+      var sample = state.text || "안녕하세요";
+      Promise.all([
+        document.fonts.load("400 " + size + state.fontFamily, sample),
+        document.fonts.load("bold " + size + state.fontFamily, sample)
+      ]).then(function(){
         draw();
       }).catch(function(){});
     }

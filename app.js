@@ -1,17 +1,14 @@
 (function(){
   "use strict";
 
-  // ========== 상수 ==========
   var RATIOS = {
     "1:1":  { w: 1080, h: 1080 },
     "4:5":  { w: 1080, h: 1350 },
     "9:16": { w: 1080, h: 1920 }
   };
   var STORAGE_KEY = "imgEditor.templates.v1";
-  var FONT_STACK = 'bold 48px "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
   var REQUIRED_FIELDS = ["id","name","ratio","text","textX","textY","fontSize","color"];
 
-  // ========== DOM ==========
   var canvas = document.getElementById("canvas");
   var ctx = canvas.getContext("2d");
 
@@ -19,6 +16,7 @@
   var imageError = document.getElementById("image-error");
   var ratioBtns = document.querySelectorAll(".ratio-btn");
   var textInput = document.getElementById("text-input");
+  var fontSelect = document.getElementById("font-select");
   var xRange = document.getElementById("x-range");
   var yRange = document.getElementById("y-range");
   var sizeRange = document.getElementById("size-range");
@@ -34,7 +32,6 @@
   var jsonImport = document.getElementById("json-import");
   var downloadBtn = document.getElementById("download");
 
-  // ========== 상태 ==========
   var state = {
     ratio: "1:1",
     image: null,
@@ -42,10 +39,10 @@
     textX: 0.5,
     textY: 0.8,
     fontSize: 48,
-    color: "#ffffff"
+    color: "#ffffff",
+    fontFamily: "sans-serif"
   };
 
-  // ========== 유틸 ==========
   function uid(){
     return "tpl_" + Date.now() + "_" + Math.random().toString(36).slice(2,8);
   }
@@ -55,7 +52,6 @@
     el.textContent = msg;
   }
 
-  // ========== 저장소 ==========
   function loadTemplates(){
     try{
       var raw = localStorage.getItem(STORAGE_KEY);
@@ -78,7 +74,6 @@
     }
   }
 
-  // ========== 캔버스 크기 ==========
   function applyRatio(ratio){
     state.ratio = ratio;
     var r = RATIOS[ratio] || RATIOS["1:1"];
@@ -90,7 +85,6 @@
     draw();
   }
 
-  // ========== 줄바꿈 ==========
   function wrapText(text, maxWidth){
     if(!text) return [];
     var lines = [];
@@ -114,13 +108,11 @@
     return lines;
   }
 
-  // ========== 그리기 ==========
   function draw(){
     var w = canvas.width;
     var h = canvas.height;
     ctx.clearRect(0, 0, w, h);
 
-    // 이미지 (cover)
     if(state.image){
       var img = state.image;
       var iw = img.naturalWidth || img.width;
@@ -133,11 +125,10 @@
       ctx.drawImage(img, dx, dy, dw, dh);
     }
 
-    // 문구
     var text = state.text;
     if(text && text.length > 0){
       var fontSize = Math.max(12, state.fontSize);
-      ctx.font = "bold " + fontSize + "px \"Apple SD Gothic Neo\", \"Malgun Gothic\", \"Segoe UI\", \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Noto Color Emoji\", sans-serif";
+      ctx.font = "bold " + fontSize + "px " + state.fontFamily + ", \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Noto Color Emoji\"";
       ctx.fillStyle = state.color;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -154,7 +145,6 @@
     }
   }
 
-  // ========== 이미지 불러오기 ==========
   imageInput.addEventListener("change", function(e){
     var file = e.target.files && e.target.files[0];
     if(!file) return;
@@ -185,7 +175,6 @@
     reader.readAsDataURL(file);
   });
 
-  // ========== 비율 ==========
   for(var i=0;i<ratioBtns.length;i++){
     ratioBtns[i].addEventListener("click", function(){
       var r = this.getAttribute("data-ratio");
@@ -193,9 +182,12 @@
     });
   }
 
-  // ========== 문구 편집 ==========
   textInput.addEventListener("input", function(){
     state.text = textInput.value;
+    draw();
+  });
+  fontSelect.addEventListener("change", function(){
+    state.fontFamily = fontSelect.value;
     draw();
   });
   xRange.addEventListener("input", function(){
@@ -218,7 +210,6 @@
     draw();
   });
 
-  // ========== 템플릿 렌더 ==========
   function renderTemplates(){
     var arr = loadTemplates();
     tplList.innerHTML = "";
@@ -276,8 +267,10 @@
     state.textY = typeof t.textY === "number" ? t.textY : 0.8;
     state.fontSize = typeof t.fontSize === "number" ? t.fontSize : 48;
     state.color = t.color || "#ffffff";
+    state.fontFamily = t.fontFamily || "sans-serif";
 
     textInput.value = state.text;
+    fontSelect.value = state.fontFamily;
     xRange.value = state.textX;
     yRange.value = state.textY;
     sizeRange.value = state.fontSize;
@@ -308,7 +301,8 @@
       textX: state.textX,
       textY: state.textY,
       fontSize: state.fontSize,
-      color: state.color
+      color: state.color,
+      fontFamily: state.fontFamily
     };
     if(saveTemplates(arr)){
       showMsg(tplMsg, "템플릿을 수정했습니다: " + newName);
@@ -330,7 +324,6 @@
     }
   }
 
-  // ========== 템플릿 저장 ==========
   tplSave.addEventListener("click", function(){
     var name = (tplName.value || "").trim();
     if(!name){ showMsg(tplMsg, "템플릿 이름을 입력하세요."); return; }
@@ -343,7 +336,8 @@
       textX: state.textX,
       textY: state.textY,
       fontSize: state.fontSize,
-      color: state.color
+      color: state.color,
+      fontFamily: state.fontFamily
     });
     if(saveTemplates(arr)){
       tplName.value = "";
@@ -354,7 +348,6 @@
     }
   });
 
-  // ========== JSON 내보내기 ==========
   jsonExport.addEventListener("click", function(){
     var arr = loadTemplates();
     if(arr.length === 0){
@@ -371,7 +364,6 @@
     showMsg(tplMsg, arr.length + "개 템플릿을 내보냈습니다.");
   });
 
-  // ========== JSON 가져오기 ==========
   function validateTemplate(item){
     if(!item || typeof item !== "object") return "항목이 객체가 아닙니다.";
     for(var i=0;i<REQUIRED_FIELDS.length;i++){
@@ -429,7 +421,6 @@
     reader.readAsText(file);
   });
 
-  // ========== PNG 다운로드 ==========
   downloadBtn.addEventListener("click", function(){
     canvas.toBlob(function(blob){
       if(!blob){ showMsg(tplMsg, "다운로드 실패"); return; }
@@ -442,7 +433,6 @@
     }, "image/png");
   });
 
-  // ========== 초기화 ==========
   applyRatio("1:1");
   renderTemplates();
 })();

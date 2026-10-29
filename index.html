@@ -42,6 +42,21 @@
         <input type="text" id="text-input" value="안녕하세요" maxlength="200">
       </label>
       <label class="field">
+        <span>폰트</span>
+        <select id="font-select">
+          <option value="sans-serif">기본 (산세리프)</option>
+          <option value="serif">명조 (serif)</option>
+          <option value="monospace">고정폭 (monospace)</option>
+          <option value="'Malgun Gothic', sans-serif">맑은 고딕</option>
+          <option value="'Apple SD Gothic Neo', sans-serif">Apple SD 고딕</option>
+          <option value="'Gulim', sans-serif">굴림</option>
+          <option value="'Batang', serif">바탕</option>
+          <option value="'Arial', sans-serif">Arial</option>
+          <option value="'Georgia', serif">Georgia</option>
+          <option value="'Courier New', monospace">Courier New</option>
+        </select>
+      </label>
+      <label class="field">
         <span>X 위치 <output id="x-out">0.50</output></span>
         <input type="range" id="x-range" min="0" max="1" step="0.01" value="0.5">
       </label>

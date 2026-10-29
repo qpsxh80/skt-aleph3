@@ -40,7 +40,7 @@
     textY: 0.8,
     fontSize: 48,
     color: "#ffffff",
-    fontFamily: "sans-serif"
+    fontFamily: "'Nanum Pen Script', cursive"
   };
 
   function uid(){
@@ -145,6 +145,16 @@
     }
   }
 
+  function ensureFontAndDraw(){
+    draw();
+    if(document.fonts && document.fonts.load){
+      var fontSpec = "bold " + Math.max(12, state.fontSize) + "px " + state.fontFamily;
+      document.fonts.load(fontSpec).then(function(){
+        draw();
+      }).catch(function(){});
+    }
+  }
+
   imageInput.addEventListener("change", function(e){
     var file = e.target.files && e.target.files[0];
     if(!file) return;
@@ -188,7 +198,7 @@
   });
   fontSelect.addEventListener("change", function(){
     state.fontFamily = fontSelect.value;
-    draw();
+    ensureFontAndDraw();
   });
   xRange.addEventListener("input", function(){
     state.textX = parseFloat(xRange.value);
@@ -280,6 +290,7 @@
     sizeOut.textContent = String(state.fontSize);
 
     applyRatio(t.ratio && RATIOS[t.ratio] ? t.ratio : "1:1");
+    ensureFontAndDraw();
     showMsg(tplMsg, "템플릿을 불러왔습니다: " + t.name);
   }
 
@@ -435,4 +446,12 @@
 
   applyRatio("1:1");
   renderTemplates();
+  ensureFontAndDraw();
+
+  // 웹폰트 로드 완료 후 다시 그리기
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){
+      draw();
+    });
+  }
 })();

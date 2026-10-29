@@ -20,7 +20,6 @@ html,body{
   -webkit-font-smoothing:antialiased;
 }
 
-/* 상단 바 */
 .topbar{
   padding:28px 24px 18px;
   border-bottom:1px solid var(--line);
@@ -37,7 +36,6 @@ html,body{
   color:var(--muted);
 }
 
-/* 레이아웃 */
 .layout{
   display:grid;
   grid-template-columns:380px 1fr;
@@ -51,7 +49,6 @@ html,body{
   .layout{grid-template-columns:1fr;}
 }
 
-/* 패널 공통 */
 .panel{
   background:var(--panel);
   border:1px solid var(--line);
@@ -70,7 +67,6 @@ html,body{
   color:var(--accent);
 }
 
-/* 이미지 파일 */
 .file-label{
   display:block;
   border:1px dashed var(--line);
@@ -89,7 +85,6 @@ html,body{
 }
 .file-label input{display:none;}
 
-/* 비율 버튼 */
 .ratio-group{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -117,7 +112,6 @@ html,body{
   outline-offset:2px;
 }
 
-/* 입력 필드 */
 .field{
   display:flex;
   flex-direction:column;
@@ -172,7 +166,6 @@ html,body{
   border-color:var(--accent);
 }
 
-/* 버튼 */
 .btn-row{
   display:flex;
   gap:8px;
@@ -211,7 +204,6 @@ html,body{
 }
 .file-inline input{display:none;}
 
-/* 힌트 / 에러 */
 .hint{
   margin:6px 0 0;
   font-size:.78rem;
@@ -221,7 +213,6 @@ html,body{
   color:var(--danger);
 }
 
-/* 템플릿 목록 */
 .tpl-list{
   list-style:none;
   margin:0;
@@ -283,7 +274,6 @@ html,body{
   border-radius:8px;
 }
 
-/* 미리보기 */
 .preview{
   background:var(--panel);
   border:1px solid var(--line);

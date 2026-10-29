@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>이미지 편집기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Jua&family=Do+Hyeon&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,7 +18,6 @@
 
 <main class="layout">
 
-  <!-- 왼쪽: 편집 도구 -->
   <section class="panel" aria-label="편집 도구">
     <div class="group">
       <h2>1. 이미지</h2>
@@ -44,6 +46,9 @@
       <label class="field">
         <span>폰트</span>
         <select id="font-select">
+          <option value="'Nanum Pen Script', cursive">나눔 펜 (손글씨)</option>
+          <option value="'Jua', sans-serif">주아 (귀여운)</option>
+          <option value="'Do Hyeon', sans-serif">도현 (추천)</option>
           <option value="sans-serif">기본 (산세리프)</option>
           <option value="serif">명조 (serif)</option>
           <option value="monospace">고정폭 (monospace)</option>
@@ -54,6 +59,13 @@
           <option value="'Arial', sans-serif">Arial</option>
           <option value="'Georgia', serif">Georgia</option>
           <option value="'Courier New', monospace">Courier New</option>
+          <option value="'Verdana', sans-serif">Verdana</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="'Impact', sans-serif">Impact</option>
+          <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+          <option value="'Segoe Script', cursive">Segoe Script</option>
+          <option value="'Lucida Handwriting', cursive">Lucida Handwriting</option>
+          <option value="'Brush Script MT', cursive">Brush Script MT</option>
         </select>
       </label>
       <label class="field">
@@ -93,7 +105,6 @@
     </div>
   </section>
 
-  <!-- 오른쪽: 미리보기 -->
   <section class="preview" aria-label="미리보기">
     <div class="canvas-wrap">
       <canvas id="canvas" width="1080" height="1080" aria-label="편집 미리보기 캔버스"></canvas>
